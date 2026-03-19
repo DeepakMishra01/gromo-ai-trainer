@@ -39,6 +39,14 @@ class Settings(BaseSettings):
     # Gamma AI (presentation generation)
     gamma_api_key: Optional[str] = None
 
+    # Auth / JWT
+    jwt_secret: str = "change-me-in-production-use-a-random-64-char-string"
+    jwt_algorithm: str = "HS256"
+    jwt_expire_minutes: int = 1440  # 24 hours
+    admin_email: Optional[str] = None
+    admin_password: str = "admin123"
+    google_client_id: str = ""
+
     # Defaults
     default_language: str = "hinglish"
     default_resolution: str = "1080p"

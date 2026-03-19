@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { authFetch } from '../api/authFetch'
 import {
   Film,
   ChevronRight,
@@ -157,8 +158,8 @@ export default function VideoStudio() {
     if (currentStep === 1 && products.length === 0 && mode !== 'ppt_mode' || (mode === 'gamma_ppt' && products.length === 0 && currentStep === 1)) {
       setProductsLoading(true)
       Promise.all([
-        fetch('/api/products').then((r) => r.json()),
-        fetch('/api/categories').then((r) => r.json()),
+        authFetch('/api/products').then((r) => r.json()),
+        authFetch('/api/categories').then((r) => r.json()),
       ])
         .then(([prods, cats]) => {
           setProducts(prods)
@@ -173,8 +174,8 @@ export default function VideoStudio() {
   useEffect(() => {
     if (currentStep === 3) {
       Promise.all([
-        fetch('/api/avatars').then((r) => r.json()),
-        fetch('/api/voices').then((r) => r.json()),
+        authFetch('/api/avatars').then((r) => r.json()),
+        authFetch('/api/voices').then((r) => r.json()),
       ])
         .then(([avs, vcs]) => {
           setAvatars(avs)
@@ -257,13 +258,13 @@ export default function VideoStudio() {
         if (selectedVoiceId) formData.append('voice_id', selectedVoiceId)
         if (targetDuration) formData.append('target_duration', targetDuration.toString())
 
-        res = await fetch('/api/video-jobs/ppt-upload', {
+        res = await authFetch('/api/video-jobs/ppt-upload', {
           method: 'POST',
           body: formData,
         })
       } else {
         // Standard mode: JSON body
-        res = await fetch('/api/video-jobs', {
+        res = await authFetch('/api/video-jobs', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

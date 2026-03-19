@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { authFetch } from '../api/authFetch'
 import { Package, Film, ListVideo, RefreshCw, Plus, GraduationCap, MessageSquare, CheckCircle, Trophy } from 'lucide-react'
 
 interface Stats {
@@ -37,19 +38,19 @@ export default function Dashboard() {
   const [syncMsg, setSyncMsg] = useState('')
 
   const fetchStats = () => {
-    fetch('/api/dashboard/stats').then(r => r.json()).then(setStats).catch(() => {})
+    authFetch('/api/dashboard/stats').then(r => r.json()).then(setStats).catch(() => {})
   }
 
   useEffect(() => {
     fetchStats()
-    fetch('/api/video-jobs').then(r => r.json()).then((jobs: VideoJob[]) => setRecentJobs(jobs.slice(0, 5))).catch(() => {})
+    authFetch('/api/video-jobs').then(r => r.json()).then((jobs: VideoJob[]) => setRecentJobs(jobs.slice(0, 5))).catch(() => {})
   }, [])
 
   const handleSync = async () => {
     setSyncing(true)
     setSyncMsg('')
     try {
-      const res = await fetch('/api/sync', { method: 'POST' })
+      const res = await authFetch('/api/sync', { method: 'POST' })
       const data = await res.json()
       setSyncMsg(data.message || data.detail || 'Sync completed')
       fetchStats()

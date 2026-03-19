@@ -9,10 +9,11 @@ from datetime import datetime
 
 from app.database import get_db
 from app.models.avatar import Avatar
+from app.auth import require_admin
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/avatars", tags=["avatars"])
+router = APIRouter(prefix="/api/avatars", tags=["avatars"], dependencies=[Depends(require_admin)])
 
 # Storage path for avatar images
 AVATAR_STORAGE = os.path.join(

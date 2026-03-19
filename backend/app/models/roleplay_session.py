@@ -27,4 +27,5 @@ class RoleplaySession(Base):
     skill_scores: Mapped[Optional[dict]] = mapped_column(PortableJSON, nullable=True)
     feedback: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     duration_seconds: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    user_id: Mapped[Optional[uuid.UUID]] = mapped_column(PortableUUID, nullable=True, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)

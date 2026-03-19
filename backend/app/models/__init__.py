@@ -7,6 +7,8 @@ from app.models.video_job_log import VideoJobLog
 from app.models.knowledge_base import KnowledgeBase
 from app.models.roleplay_session import RoleplaySession
 from app.models.agent_session import AgentSession
+from app.models.user import User, UserRole
+from app.models.activity_log import ActivityLog
 
 __all__ = [
     "Category",
@@ -18,4 +20,7 @@ __all__ = [
     "KnowledgeBase",
     "RoleplaySession",
     "AgentSession",
+    "User",
+    "UserRole",
+    "ActivityLog",
 ]

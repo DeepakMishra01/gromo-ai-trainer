@@ -12,7 +12,8 @@ httpx==0.28.1
 python-dotenv==1.0.1
 pgvector==0.3.6
 websockets==14.1
-python-jose==3.3.0
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
 moviepy==1.0.3
 python-pptx==1.0.2
 openai==1.58.1

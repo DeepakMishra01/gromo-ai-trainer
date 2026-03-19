@@ -8,10 +8,11 @@ from datetime import datetime
 
 from app.database import get_db
 from app.models.voice import Voice
+from app.auth import require_admin
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/voices", tags=["voices"])
+router = APIRouter(prefix="/api/voices", tags=["voices"], dependencies=[Depends(require_admin)])
 
 
 class VoiceOut(BaseModel):

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { authFetch } from '../api/authFetch'
 import { Bot, Send, Mic, MicOff, Volume2, VolumeX, Trash2, History, Plus, X, Square } from 'lucide-react'
 import { useVoice } from '../hooks/useVoice'
 
@@ -48,7 +49,7 @@ export default function TrainingAgent() {
   })
 
   useEffect(() => {
-    fetch('/api/agent/suggestions')
+    authFetch('/api/agent/suggestions')
       .then(r => r.json())
       .then(d => setSuggestions(d.suggestions || []))
       .catch(() => {})
@@ -67,7 +68,7 @@ export default function TrainingAgent() {
     setSending(true)
 
     try {
-      const res = await fetch('/api/agent/chat', {
+      const res = await authFetch('/api/agent/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_id: sessionId, message: msg }),
@@ -96,7 +97,7 @@ export default function TrainingAgent() {
 
   const loadHistory = async () => {
     try {
-      const res = await fetch('/api/agent/sessions')
+      const res = await authFetch('/api/agent/sessions')
       const data = await res.json()
       setSessions(data)
       setShowHistory(true)
@@ -107,7 +108,7 @@ export default function TrainingAgent() {
 
   const loadSession = async (id: string) => {
     try {
-      const res = await fetch(`/api/agent/sessions/${id}`)
+      const res = await authFetch(`/api/agent/sessions/${id}`)
       const data = await res.json()
       setSessionId(id)
       setMessages(data.conversation_log?.messages || [])
@@ -118,7 +119,7 @@ export default function TrainingAgent() {
   const deleteSession = async (id: string, e: React.MouseEvent) => {
     e.stopPropagation()
     if (!confirm('Delete this conversation?')) return
-    await fetch(`/api/agent/sessions/${id}`, { method: 'DELETE' })
+    await authFetch(`/api/agent/sessions/${id}`, { method: 'DELETE' })
     setSessions(prev => prev.filter(s => s.id !== id))
     if (sessionId === id) newChat()
   }

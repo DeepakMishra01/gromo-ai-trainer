@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { authFetch } from '../api/authFetch'
 import {
   GraduationCap,
   Send,
@@ -135,7 +136,7 @@ export default function TrainingPlayer() {
 
   const fetchProducts = () => {
     setLoadingProducts(true)
-    fetch('/api/training/products')
+    authFetch('/api/training/products')
       .then((r) => r.json())
       .then((data) => {
         setProducts(data)
@@ -157,7 +158,7 @@ export default function TrainingPlayer() {
     setCurrentQuizIndex(0)
     setSessionError('')
     try {
-      const res = await fetch('/api/training/session', {
+      const res = await authFetch('/api/training/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ product_id: product.id }),
@@ -179,7 +180,7 @@ export default function TrainingPlayer() {
     setDoubts((prev) => [...prev, { question, answer: '' }])
     setAskingDoubt(true)
     try {
-      const res = await fetch('/api/training/ask', {
+      const res = await authFetch('/api/training/ask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ product_id: selectedProduct.id, question }),

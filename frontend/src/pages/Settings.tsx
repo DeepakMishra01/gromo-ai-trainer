@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { authFetch } from '../api/authFetch'
 import { Check, X } from 'lucide-react'
 
 interface AppSettings {
@@ -38,7 +39,7 @@ export default function Settings() {
   const [settings, setSettings] = useState<AppSettings | null>(null)
 
   useEffect(() => {
-    fetch('/api/settings')
+    authFetch('/api/settings')
       .then((r) => r.json())
       .then(setSettings)
       .catch(() => {})

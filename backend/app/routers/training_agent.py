@@ -7,6 +7,8 @@ from pydantic import BaseModel
 import json
 
 from app.database import get_db
+from app.auth import get_current_user
+from app.models.user import User
 from app.models.product import Product
 from app.models.category import Category
 from app.services.knowledge_builder import get_knowledge_for_product
@@ -15,7 +17,7 @@ from app.services.training_session import create_training_session
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/training", tags=["training"])
+router = APIRouter(prefix="/api/training", tags=["training"], dependencies=[Depends(get_current_user)])
 
 
 # ---- Pydantic Models ----

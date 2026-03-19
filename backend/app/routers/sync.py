@@ -5,8 +5,9 @@ from pydantic import BaseModel
 
 from app.database import get_db
 from app.services.gromo_sync import run_sync
+from app.auth import require_admin
 
-router = APIRouter(prefix="/api/sync", tags=["sync"])
+router = APIRouter(prefix="/api/sync", tags=["sync"], dependencies=[Depends(require_admin)])
 
 
 class SyncResponse(BaseModel):

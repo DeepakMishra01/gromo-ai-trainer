@@ -11,13 +11,14 @@ from app.database import get_db
 from app.models.video_job import VideoJob, JobType, JobStatus
 from app.models.video_job_log import VideoJobLog
 from app.models.product import Product
+from app.auth import require_admin
 
 # Base storage path for PPT uploads
 STORAGE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "storage")
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/video-jobs", tags=["video-jobs"])
+router = APIRouter(prefix="/api/video-jobs", tags=["video-jobs"], dependencies=[Depends(require_admin)])
 
 
 class VideoJobCreate(BaseModel):

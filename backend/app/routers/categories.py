@@ -7,8 +7,9 @@ from datetime import datetime
 
 from app.database import get_db
 from app.models.category import Category
+from app.auth import get_current_user
 
-router = APIRouter(prefix="/api/categories", tags=["categories"])
+router = APIRouter(prefix="/api/categories", tags=["categories"], dependencies=[Depends(get_current_user)])
 
 
 class CategoryOut(BaseModel):

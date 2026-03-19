@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { authFetch } from '../api/authFetch'
 import {
   ListVideo,
   Download,
@@ -85,7 +86,7 @@ export default function VideoQueue() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   const fetchJobs = () => {
-    fetch('/api/video-jobs')
+    authFetch('/api/video-jobs')
       .then((r) => r.json())
       .then((data) => {
         setJobs(data)
@@ -103,7 +104,7 @@ export default function VideoQueue() {
   const retryJob = async (id: string) => {
     setRetrying(id)
     try {
-      await fetch(`/api/video-jobs/${id}/retry`, { method: 'POST' })
+      await authFetch(`/api/video-jobs/${id}/retry`, { method: 'POST' })
       fetchJobs()
     } finally {
       setRetrying(null)
@@ -114,7 +115,7 @@ export default function VideoQueue() {
     if (!confirm('Are you sure you want to delete this video job and its files?')) return
     setDeleting(id)
     try {
-      await fetch(`/api/video-jobs/${id}`, { method: 'DELETE' })
+      await authFetch(`/api/video-jobs/${id}`, { method: 'DELETE' })
       fetchJobs()
     } finally {
       setDeleting(null)
@@ -124,7 +125,7 @@ export default function VideoQueue() {
   const deleteAllJobs = async () => {
     setDeletingAll(true)
     try {
-      await fetch('/api/video-jobs', { method: 'DELETE' })
+      await authFetch('/api/video-jobs', { method: 'DELETE' })
       fetchJobs()
     } finally {
       setDeletingAll(false)
@@ -143,7 +144,7 @@ export default function VideoQueue() {
     }
     setLoadingLogs((prev) => ({ ...prev, [id]: true }))
     try {
-      const res = await fetch(`/api/video-jobs/${id}/logs`)
+      const res = await authFetch(`/api/video-jobs/${id}/logs`)
       const data = await res.json()
       setExpandedLogs((prev) => ({ ...prev, [id]: Array.isArray(data) ? data : [] }))
     } catch {

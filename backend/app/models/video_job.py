@@ -48,6 +48,7 @@ class VideoJob(Base):
     error_message: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     ppt_file_path: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
     gamma_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    user_id: Mapped[Optional[uuid.UUID]] = mapped_column(PortableUUID, nullable=True, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
 

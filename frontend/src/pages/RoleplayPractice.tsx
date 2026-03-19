@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { authFetch } from '../api/authFetch'
 import {
   MessageSquare,
   Send,
@@ -133,14 +134,14 @@ export default function RoleplayPractice() {
   useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [conversation])
 
   const fetchProducts = () => {
-    fetch('/api/products').then(r => r.json()).then((data: ProductItem[]) => {
+    authFetch('/api/products').then(r => r.json()).then((data: ProductItem[]) => {
       setProducts(data)
       if (data.length > 0 && !selectedProduct) setSelectedProduct(data[0].id)
     }).catch(() => {})
   }
 
   const fetchHistory = () => {
-    fetch('/api/roleplay/history').then(r => r.json()).then(setHistory).catch(() => {})
+    authFetch('/api/roleplay/history').then(r => r.json()).then(setHistory).catch(() => {})
   }
 
   const deleteSession = async (id: string, e: React.MouseEvent) => {
@@ -148,7 +149,7 @@ export default function RoleplayPractice() {
     if (!confirm('Delete this roleplay session?')) return
     setDeletingSession(id)
     try {
-      await fetch(`/api/roleplay/${id}`, { method: 'DELETE' })
+      await authFetch(`/api/roleplay/${id}`, { method: 'DELETE' })
       if (selectedHistoryItem?.id === id) setSelectedHistoryItem(null)
       fetchHistory()
     } finally { setDeletingSession(null) }
@@ -157,7 +158,7 @@ export default function RoleplayPractice() {
   const deleteAllSessions = async () => {
     setDeletingAll(true)
     try {
-      await fetch('/api/roleplay', { method: 'DELETE' })
+      await authFetch('/api/roleplay', { method: 'DELETE' })
       setHistory([])
       setSelectedHistoryItem(null)
     } finally { setDeletingAll(false); setShowDeleteAllConfirm(false) }
@@ -175,7 +176,7 @@ export default function RoleplayPractice() {
     setLoading(true)
     setStartError('')
     try {
-      const res = await fetch('/api/roleplay/start', {
+      const res = await authFetch('/api/roleplay/start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ product_id: selectedProduct, difficulty }),
@@ -208,7 +209,7 @@ export default function RoleplayPractice() {
     setConversation(prev => [...prev, { role: 'partner', text: msg }])
     setSending(true)
     try {
-      const res = await fetch('/api/roleplay/message', {
+      const res = await authFetch('/api/roleplay/message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_id: sessionId, message: msg }),
@@ -232,7 +233,7 @@ export default function RoleplayPractice() {
   const endSession = async () => {
     setLoading(true)
     try {
-      const res = await fetch('/api/roleplay/end', {
+      const res = await authFetch('/api/roleplay/end', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_id: sessionId }),

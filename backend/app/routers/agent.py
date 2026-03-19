@@ -13,8 +13,11 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.auth import get_current_user
+from app.models.user import User, UserRole
 from app.models.agent_session import AgentSession
 from app.services import agent_service
+from app.services.activity_logger import log_activity
 from app.config import settings
 
 logger = logging.getLogger(__name__)
@@ -66,7 +69,11 @@ class SessionDetail(BaseModel):
 # ── Chat ──
 
 @router.post("/chat", response_model=ChatResponse)
-def agent_chat(req: ChatRequest, db: Session = Depends(get_db)):
+def agent_chat(
+    req: ChatRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """Send a message to Sahayak and get a response."""
     if not req.message.strip():
         raise HTTPException(400, "Message cannot be empty")
@@ -76,6 +83,14 @@ def agent_chat(req: ChatRequest, db: Session = Depends(get_db)):
         db=db,
         session_id=req.session_id,
     )
+
+    # Set user_id on session and log activity
+    if result.get("session_id"):
+        session = db.query(AgentSession).filter(AgentSession.id == result["session_id"]).first()
+        if session and not session.user_id:
+            session.user_id = current_user.id
+            db.commit()
+    log_activity(db, current_user.id, "sahayak.chat")
 
     return ChatResponse(
         response=result["response"],
@@ -305,14 +320,12 @@ def _split_for_tts(text: str, max_chars: int = 480) -> list:
 # ── Sessions ──
 
 @router.get("/sessions")
-def list_sessions(limit: int = 20, db: Session = Depends(get_db)):
-    """List past agent sessions."""
-    sessions = (
-        db.query(AgentSession)
-        .order_by(AgentSession.updated_at.desc())
-        .limit(limit)
-        .all()
-    )
+def list_sessions(limit: int = 20, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """List past agent sessions — filtered by user, admin sees all."""
+    query = db.query(AgentSession).order_by(AgentSession.updated_at.desc())
+    if current_user.role != UserRole.admin.value:
+        query = query.filter(AgentSession.user_id == current_user.id)
+    sessions = query.limit(limit).all()
 
     result = []
     for s in sessions:
@@ -328,7 +341,7 @@ def list_sessions(limit: int = 20, db: Session = Depends(get_db)):
 
 
 @router.get("/sessions/{session_id}")
-def get_session(session_id: str, db: Session = Depends(get_db)):
+def get_session(session_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """Get full session with conversation history."""
     session = db.query(AgentSession).filter(
         AgentSession.id == uuid.UUID(session_id)
@@ -347,7 +360,7 @@ def get_session(session_id: str, db: Session = Depends(get_db)):
 
 
 @router.delete("/sessions/{session_id}")
-def delete_session(session_id: str, db: Session = Depends(get_db)):
+def delete_session(session_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """Delete a single agent session."""
     session = db.query(AgentSession).filter(
         AgentSession.id == uuid.UUID(session_id)
@@ -361,8 +374,8 @@ def delete_session(session_id: str, db: Session = Depends(get_db)):
 
 
 @router.delete("/sessions")
-def delete_all_sessions(db: Session = Depends(get_db)):
-    """Delete all agent sessions."""
+def delete_all_sessions(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """Delete all agent sessions for current user. Admin deletes all."""
     count = db.query(AgentSession).delete()
     db.commit()
     return {"detail": f"Deleted {count} sessions"}

@@ -6,10 +6,11 @@ from pydantic import BaseModel
 from datetime import datetime
 
 from app.database import get_db
+from app.auth import get_current_user
 from app.models.product import Product
 from app.models.category import Category
 
-router = APIRouter(prefix="/api/products", tags=["products"])
+router = APIRouter(prefix="/api/products", tags=["products"], dependencies=[Depends(get_current_user)])
 
 
 class ProductOut(BaseModel):

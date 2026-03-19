@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { authFetch } from '../api/authFetch'
 import { RefreshCw, Search, Package, X, ChevronRight, IndianRupee } from 'lucide-react'
 
 interface ProductListItem {
@@ -61,14 +62,14 @@ export default function Products() {
     const params = new URLSearchParams()
     if (selectedCategory) params.set('category_id', selectedCategory)
     if (search) params.set('search', search)
-    fetch(`/api/products?${params}`)
+    authFetch(`/api/products?${params}`)
       .then((r) => r.json())
       .then(setProducts)
       .catch(() => {})
   }
 
   const fetchCategories = () => {
-    fetch('/api/categories')
+    authFetch('/api/categories')
       .then((r) => r.json())
       .then(setCategories)
       .catch(() => {})
@@ -78,7 +79,7 @@ export default function Products() {
     setSyncing(true)
     setSyncResult(null)
     try {
-      const res = await fetch('/api/sync', { method: 'POST' })
+      const res = await authFetch('/api/sync', { method: 'POST' })
       const data = await res.json()
       setSyncResult(data)
       fetchProducts()
@@ -91,7 +92,7 @@ export default function Products() {
   const openProduct = async (id: string) => {
     setLoadingDetail(true)
     try {
-      const res = await fetch(`/api/products/${id}`)
+      const res = await authFetch(`/api/products/${id}`)
       const data = await res.json()
       setSelectedProduct(data)
     } finally {

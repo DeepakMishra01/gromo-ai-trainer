@@ -235,6 +235,27 @@ def promote_user(
     return {"detail": f"User {target.email} is now {req.role}"}
 
 
+@router.delete("/users/{user_id}")
+def delete_user(
+    user_id: str,
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_admin),
+):
+    """Admin: Permanently delete a user."""
+    target = db.query(User).filter(User.id == user_id).first()
+    if not target:
+        raise HTTPException(404, "User not found")
+
+    if str(target.id) == str(admin.id):
+        raise HTTPException(400, "Cannot delete yourself")
+
+    email = target.email
+    db.delete(target)
+    db.commit()
+    logger.info(f"Admin {admin.email} deleted user {email}")
+    return {"detail": f"User {email} deleted"}
+
+
 @router.get("/users", response_model=List[UserResponse])
 def list_users(
     db: Session = Depends(get_db),

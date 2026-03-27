@@ -43,6 +43,24 @@ export default function Analytics() {
   const token = localStorage.getItem('gromo-token')
   const headers: Record<string, string> = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
 
+  const handleDeleteUser = async (userId: string, email: string) => {
+    if (!confirm(`Are you sure you want to permanently delete user "${email}"? This cannot be undone.`)) return
+    try {
+      const res = await fetch(`/api/auth/users/${userId}`, {
+        method: 'DELETE',
+        headers,
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        alert(data.detail || 'Failed to delete user')
+        return
+      }
+      setUsers(prev => prev.filter(u => u.id !== userId))
+    } catch {
+      alert('Failed to delete user')
+    }
+  }
+
   const handleRoleChange = async (userId: string, newRole: string) => {
     const action = newRole === 'admin' ? 'promote to Admin' : 'demote to User'
     if (!confirm(`Are you sure you want to ${action} this user?`)) return
@@ -186,16 +204,24 @@ export default function Analytics() {
                     {u.last_login ? new Date(u.last_login).toLocaleString() : 'Never'}
                   </td>
                   <td className="py-3 px-2 text-center">
-                    <button
-                      onClick={() => handleRoleChange(u.id, u.role === 'admin' ? 'user' : 'admin')}
-                      className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
-                        u.role === 'admin'
-                          ? 'bg-gray-100 text-gray-600 hover:bg-red-50 hover:text-red-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-red-900/20 dark:hover:text-red-400'
-                          : 'bg-purple-50 text-purple-600 hover:bg-purple-100 dark:bg-purple-900/20 dark:text-purple-400 dark:hover:bg-purple-900/40'
-                      }`}
-                    >
-                      {u.role === 'admin' ? 'Remove Admin' : 'Make Admin'}
-                    </button>
+                    <div className="flex items-center justify-center gap-2">
+                      <button
+                        onClick={() => handleRoleChange(u.id, u.role === 'admin' ? 'user' : 'admin')}
+                        className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                          u.role === 'admin'
+                            ? 'bg-gray-100 text-gray-600 hover:bg-red-50 hover:text-red-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-red-900/20 dark:hover:text-red-400'
+                            : 'bg-purple-50 text-purple-600 hover:bg-purple-100 dark:bg-purple-900/20 dark:text-purple-400 dark:hover:bg-purple-900/40'
+                        }`}
+                      >
+                        {u.role === 'admin' ? 'Remove Admin' : 'Make Admin'}
+                      </button>
+                      <button
+                        onClick={() => handleDeleteUser(u.id, u.email)}
+                        className="px-3 py-1 rounded-lg text-xs font-medium bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 transition-colors"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

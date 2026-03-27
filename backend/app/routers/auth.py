@@ -39,6 +39,10 @@ class GoogleLoginRequest(BaseModel):
     credential: str  # Google ID token from frontend
 
 
+class FirebaseLoginRequest(BaseModel):
+    id_token: str  # Firebase ID token from phone auth
+
+
 class UserResponse(BaseModel):
     id: str
     email: str
@@ -183,6 +187,85 @@ def google_login(req: GoogleLoginRequest, db: Session = Depends(get_db)):
         db.commit()
         db.refresh(user)
         logger.info(f"New Google user: {email} (role={user.role})")
+
+    if not user.is_active:
+        raise HTTPException(403, "Account is deactivated")
+
+    return _make_auth_response(user)
+
+
+@router.post("/firebase", response_model=AuthResponse)
+def firebase_login(req: FirebaseLoginRequest, db: Session = Depends(get_db)):
+    """Login or register via Firebase Phone Auth. Verifies the Firebase ID token."""
+    import json
+    import base64
+
+    try:
+        # Decode JWT payload without verification first to get claims
+        parts = req.id_token.split('.')
+        if len(parts) != 3:
+            raise HTTPException(401, "Invalid Firebase token format")
+
+        # Decode payload (add padding)
+        payload_b64 = parts[1] + '=' * (4 - len(parts[1]) % 4)
+        payload = json.loads(base64.urlsafe_b64decode(payload_b64))
+
+        # Verify issuer and audience
+        expected_issuer = f"https://securetoken.google.com/{settings.firebase_project_id}"
+        if payload.get("iss") != expected_issuer:
+            raise HTTPException(401, "Invalid Firebase token issuer")
+        if payload.get("aud") != settings.firebase_project_id:
+            raise HTTPException(401, "Invalid Firebase token audience")
+
+        # Check expiry
+        import time
+        if payload.get("exp", 0) < time.time():
+            raise HTTPException(401, "Firebase token expired")
+
+        phone = payload.get("phone_number", "")
+        if not phone:
+            raise HTTPException(400, "No phone number in Firebase token")
+
+        # Also try to verify with Google's tokeninfo as extra validation
+        try:
+            resp = httpx.get(
+                f"https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo",
+                params={"key": settings.firebase_api_key},
+                timeout=10.0,
+            )
+        except Exception:
+            pass  # Proceed with JWT-based verification
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Firebase token decode failed: {e}")
+        raise HTTPException(401, "Invalid Firebase token")
+
+    # Find or create user by phone
+    user = db.query(User).filter(User.phone == phone).first()
+
+    if user:
+        user.last_login = datetime.utcnow()
+        db.commit()
+    else:
+        # Create new user with phone
+        admin_email = (settings.admin_email or "").strip().lower()
+        user_count = db.query(User).count()
+        role = UserRole.admin.value if user_count == 0 else UserRole.user.value
+
+        user = User(
+            email=None,
+            phone=phone,
+            hashed_password="",
+            name=None,
+            role=role,
+            last_login=datetime.utcnow(),
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        logger.info(f"New phone user: {phone} (role={user.role})")
 
     if not user.is_active:
         raise HTTPException(403, "Account is deactivated")

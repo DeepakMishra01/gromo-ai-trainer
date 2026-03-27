@@ -76,6 +76,17 @@ def _run_migrations():
                     logger.info(f"Added user_id column to {table_name}")
             except Exception as e:
                 logger.warning(f"Migration for {table_name}: {e}")
+
+        # Add phone column to users table if missing
+        try:
+            user_columns = [c["name"] for c in inspector.get_columns("users")]
+            if "phone" not in user_columns:
+                with engine.begin() as conn:
+                    conn.execute(text("ALTER TABLE users ADD COLUMN phone VARCHAR(20)"))
+                logger.info("Added phone column to users")
+            # Make email nullable if needed
+        except Exception as e:
+            logger.warning(f"Users migration: {e}")
     except Exception as e:
         logger.warning(f"Migration check failed: {e}")
 

@@ -6,7 +6,7 @@ import { useAuthStore } from './store/authStore'
 
 // Pages
 import Login from './pages/Login'
-import Register from './pages/Register'
+// Register page removed — Google + Phone OTP auto-register
 import Dashboard from './pages/Dashboard'
 import Products from './pages/Products'
 import Avatars from './pages/Avatars'
@@ -30,7 +30,7 @@ export default function App() {
     <Routes>
       {/* Public routes */}
       <Route path="/login" element={isAuthenticated ? <Navigate to={isAdmin ? '/' : '/training'} /> : <Login />} />
-      <Route path="/register" element={isAuthenticated ? <Navigate to={isAdmin ? '/' : '/training'} /> : <Register />} />
+      <Route path="/register" element={<Navigate to="/login" />} />
 
       {/* Protected routes inside Layout */}
       <Route path="/" element={

@@ -46,6 +46,8 @@ class Settings(BaseSettings):
     admin_email: Optional[str] = None
     admin_password: str = "admin123"
     google_client_id: str = ""
+    firebase_project_id: str = ""
+    firebase_api_key: str = ""
 
     # Defaults
     default_language: str = "hinglish"

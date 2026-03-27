@@ -1,0 +1,16 @@
+[Unit]
+Description=GroMo AI Trainer Backend
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/gromo-ai-trainer/backend
+Environment=PATH=/home/ubuntu/gromo-ai-trainer/backend/venv/bin:/usr/local/bin:/usr/bin
+ExecStart=/home/ubuntu/gromo-ai-trainer/backend/venv/bin/gunicorn app.main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --timeout 300
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

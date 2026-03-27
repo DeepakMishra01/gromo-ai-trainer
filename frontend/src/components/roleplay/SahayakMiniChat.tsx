@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { Bot, Send, Mic, MicOff, Volume2, VolumeX, Square, GraduationCap, HelpCircle, Award } from 'lucide-react'
 import { useVoice } from '../../hooks/useVoice'
+import { authFetch } from '../../api/authFetch'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -101,7 +102,7 @@ export default function SahayakMiniChat({
     if (!roleplaySessionId) return
     setSending(true)
     try {
-      const res = await fetch('/api/roleplay/coaching', {
+      const res = await authFetch('/api/roleplay/coaching', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_id: roleplaySessionId }),
@@ -131,7 +132,7 @@ export default function SahayakMiniChat({
       let responseText = ''
 
       if (mode === 'help') {
-        const res = await fetch('/api/roleplay/sahayak-help', {
+        const res = await authFetch('/api/roleplay/sahayak-help', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -144,7 +145,7 @@ export default function SahayakMiniChat({
         responseText = data.response
         if (data.session_id) setSahayakSessionId(data.session_id)
       } else {
-        const res = await fetch('/api/agent/chat', {
+        const res = await authFetch('/api/agent/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

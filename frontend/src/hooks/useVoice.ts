@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { authFetch } from '../api/authFetch'
 
 interface UseVoiceOptions {
   lang?: string
@@ -126,7 +127,7 @@ export function useVoice(options: UseVoiceOptions = {}) {
       const controller = new AbortController()
       abortRef.current = controller
 
-      const res = await fetch('/api/agent/tts', {
+      const res = await authFetch('/api/agent/tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text }),

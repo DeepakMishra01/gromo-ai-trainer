@@ -67,24 +67,42 @@ export default function Login() {
   }
 
   useEffect(() => {
-    // Fetch Google Client ID and render button
+    // Fetch Google Client ID then wait for Google script to load
+    const initGoogle = (clientId: string) => {
+      if (!window.google || !googleBtnRef.current) return
+      window.google.accounts.id.initialize({
+        client_id: clientId,
+        callback: handleGoogleCallback,
+      })
+      window.google.accounts.id.renderButton(googleBtnRef.current, {
+        theme: 'outline',
+        size: 'large',
+        width: '100%',
+        text: 'signin_with',
+        shape: 'pill',
+      })
+    }
+
     fetch('/api/auth/google-client-id')
       .then(r => r.json())
       .then(data => {
-        if (!data.client_id || !window.google) return
-        window.google.accounts.id.initialize({
-          client_id: data.client_id,
-          callback: handleGoogleCallback,
-        })
-        if (googleBtnRef.current) {
-          window.google.accounts.id.renderButton(googleBtnRef.current, {
-            theme: 'outline',
-            size: 'large',
-            width: '100%',
-            text: 'signin_with',
-            shape: 'pill',
-          })
+        if (!data.client_id) return
+        // If Google script already loaded, init immediately
+        if (window.google) {
+          initGoogle(data.client_id)
+          return
         }
+        // Otherwise wait for script to load (polls every 200ms, max 10s)
+        let attempts = 0
+        const interval = setInterval(() => {
+          attempts++
+          if (window.google) {
+            clearInterval(interval)
+            initGoogle(data.client_id)
+          } else if (attempts > 50) {
+            clearInterval(interval)
+          }
+        }, 200)
       })
       .catch(() => {})
   }, [])

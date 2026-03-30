@@ -16,8 +16,12 @@ export function useTheme() {
     const root = document.documentElement
     if (theme === 'dark') {
       root.classList.add('dark')
+      document.body.classList.remove('bg-gray-50')
+      document.body.classList.add('bg-gray-900')
     } else {
       root.classList.remove('dark')
+      document.body.classList.remove('bg-gray-900')
+      document.body.classList.add('bg-gray-50')
     }
     localStorage.setItem('gromo-theme', theme)
   }, [theme])

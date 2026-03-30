@@ -52,8 +52,18 @@
         }
       })();
     </script>
+    <!-- Apply dark mode before paint to prevent flash -->
+    <script>
+      (function() {
+        var t = localStorage.getItem('gromo-theme');
+        var isDark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
   </head>
-  <body class="bg-gray-50">
+  <body class="bg-gray-50 dark:bg-gray-900">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

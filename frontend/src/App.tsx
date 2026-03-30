@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import { useAuthStore } from './store/authStore'
+import { useTheme } from './hooks/useTheme'
 
 // Pages
 import Login from './pages/Login'
@@ -21,6 +22,7 @@ import Analytics from './pages/Analytics'
 
 export default function App() {
   const { loadFromStorage, isAuthenticated, isAdmin } = useAuthStore()
+  useTheme() // Apply dark/light theme on app load
 
   useEffect(() => {
     loadFromStorage()

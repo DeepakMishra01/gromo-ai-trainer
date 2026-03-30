@@ -125,6 +125,7 @@ export default function TrainingPlayer() {
   const [quizChecked, setQuizChecked] = useState<Record<number, boolean>>({})
   const [quizScore, setQuizScore] = useState<number | null>(null)
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0)
+  const [showMobileSections, setShowMobileSections] = useState(false)
 
   // Fetch products on mount
   useEffect(() => {
@@ -377,7 +378,6 @@ export default function TrainingPlayer() {
     )
   }
 
-  const [showMobileSections, setShowMobileSections] = useState(false)
   const currentSectionData = session.sections[currentSection]
   const isQuizSection = currentSectionData?.content.type === 'quiz'
 

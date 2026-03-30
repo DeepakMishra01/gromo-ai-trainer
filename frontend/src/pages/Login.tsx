@@ -15,11 +15,17 @@ declare global {
   }
 }
 
+function isInAppBrowser() {
+  const ua = navigator.userAgent || navigator.vendor || (window as any).opera || ''
+  return /FBAN|FBAV|Instagram|Line|WhatsApp|Snapchat|Twitter|LinkedInApp/i.test(ua)
+}
+
 export default function Login() {
   const [googleLoading, setGoogleLoading] = useState(false)
   const { error, clearError } = useAuthStore()
   const navigate = useNavigate()
   const googleBtnRef = useRef<HTMLDivElement>(null)
+  const inApp = isInAppBrowser()
 
   const navigateByRole = (role: string) => {
     navigate(role === 'admin' ? '/' : '/training')
@@ -112,6 +118,29 @@ export default function Login() {
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 text-sm text-red-700 dark:text-red-400 mb-4">
               {error}
               <button type="button" onClick={clearError} className="float-right font-bold">&times;</button>
+            </div>
+          )}
+
+          {/* In-app browser warning */}
+          {inApp && (
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4 text-center">
+              <p className="text-sm font-medium text-amber-800 mb-2">
+                Google Sign-In doesn't work in this browser
+              </p>
+              <p className="text-xs text-amber-600 mb-3">
+                Please open this link in Chrome or Safari
+              </p>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href)
+                  const btn = document.getElementById('copy-link-btn')
+                  if (btn) btn.textContent = 'Copied!'
+                }}
+                id="copy-link-btn"
+                className="px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700"
+              >
+                Copy Link
+              </button>
             </div>
           )}
 

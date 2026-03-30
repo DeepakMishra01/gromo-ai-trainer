@@ -75,12 +75,12 @@ export default function Voices() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">Manage Indian Hinglish voices for narration</p>
+    <div className="space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+        <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">Manage Indian Hinglish voices for narration</p>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-sm font-medium"
+          className="flex items-center gap-2 px-3 md:px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-xs md:text-sm font-medium"
         >
           <Plus className="w-4 h-4" />
           Add Voice
@@ -88,23 +88,23 @@ export default function Voices() {
       </div>
 
       {loading ? (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center text-gray-500">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-12 text-center text-gray-500">
           <div className="w-8 h-8 border-2 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
           <p>Loading voices...</p>
         </div>
       ) : voices.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center text-gray-500">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-12 text-center text-gray-500">
           <Mic className="w-12 h-12 mx-auto mb-3 text-gray-300" />
           <p>No voices configured yet. Add a voice to get started.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {voices.map((voice) => (
             <div
               key={voice.id}
-              className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow"
             >
-              <div className="p-6">
+              <div className="p-4 md:p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
                     <Mic className="w-6 h-6 text-primary-600" />
@@ -126,7 +126,7 @@ export default function Voices() {
                   </div>
                 </div>
 
-                <h3 className="font-medium text-gray-900 text-lg">{voice.name}</h3>
+                <h3 className="font-medium text-gray-900 dark:text-white text-base md:text-lg">{voice.name}</h3>
                 <p className="text-xs text-gray-400 mt-1">
                   Added {new Date(voice.created_at).toLocaleDateString()}
                 </p>

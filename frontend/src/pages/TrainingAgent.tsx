@@ -132,24 +132,24 @@ export default function TrainingAgent() {
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)]">
+    <div className="flex flex-col h-[calc(100vh-5rem)] md:h-[calc(100vh-4rem)]">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-3 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-            <Bot className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+      <div className="flex items-center justify-between px-3 md:px-6 py-2 md:py-3 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-2 md:gap-3 min-w-0">
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center shrink-0">
+            <Bot className="w-5 h-5 md:w-6 md:h-6 text-emerald-600 dark:text-emerald-400" />
           </div>
-          <div>
-            <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Sahayak</h1>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Training Assistant — Kuch bhi poochiye!</p>
+          <div className="min-w-0">
+            <h1 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white">Sahayak</h1>
+            <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">Training Assistant — Kuch bhi poochiye!</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <button onClick={newChat} className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors">
-            <Plus className="w-4 h-4" /> New Chat
+        <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+          <button onClick={newChat} className="flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1.5 text-xs md:text-sm text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors">
+            <Plus className="w-3.5 h-3.5 md:w-4 md:h-4" /> <span className="hidden sm:inline">New</span> Chat
           </button>
-          <button onClick={loadHistory} className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-            <History className="w-4 h-4" /> History
+          <button onClick={loadHistory} className="flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1.5 text-xs md:text-sm text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+            <History className="w-3.5 h-3.5 md:w-4 md:h-4" /> <span className="hidden sm:inline">History</span>
           </button>
         </div>
       </div>
@@ -189,15 +189,15 @@ export default function TrainingAgent() {
       )}
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+      <div className="flex-1 overflow-y-auto px-3 md:px-6 py-3 md:py-4 space-y-3 md:space-y-4">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full space-y-6">
             <div className="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
               <Bot className="w-12 h-12 text-emerald-600 dark:text-emerald-400" />
             </div>
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Namaste! Main hoon Sahayak</h2>
-              <p className="text-gray-500 dark:text-gray-400 mt-2 max-w-md">
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Namaste! Main hoon Sahayak</h2>
+              <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 mt-2 max-w-md">
                 Aapka training assistant. Kisi bhi GroMo product ke baare mein poochiye —
                 benefits, process, terms, ya comparison!
               </p>
@@ -293,7 +293,7 @@ export default function TrainingAgent() {
       </div>
 
       {/* Input Area */}
-      <div className="px-6 py-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+      <div className="px-3 md:px-6 py-2 md:py-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-2">
           {voice.hasSpeechRecognition && (
             <button

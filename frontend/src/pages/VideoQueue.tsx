@@ -172,10 +172,10 @@ export default function VideoQueue() {
   const counts = getCounts()
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Filter Tabs + Clear All */}
-      <div className="flex items-center justify-between bg-white rounded-xl shadow-sm border border-gray-200 p-2">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-2">
+        <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto w-full sm:w-auto">
           {filterTabs.map((tab) => {
             const Icon = tab.icon
             const count = counts[tab.key]
@@ -183,7 +183,7 @@ export default function VideoQueue() {
               <button
                 key={tab.key}
                 onClick={() => setFilter(tab.key)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
                   filter === tab.key
                     ? 'bg-primary-600 text-white'
                     : 'text-gray-600 hover:bg-gray-100'
@@ -237,7 +237,7 @@ export default function VideoQueue() {
       </div>
 
       {/* Jobs List */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
         {loading ? (
           <div className="text-center py-12 text-gray-500">
             <div className="w-8 h-8 border-2 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
@@ -253,17 +253,17 @@ export default function VideoQueue() {
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {filteredJobs.map((job) => {
               const isInProgress = inProgressStatuses.includes(job.status)
               const isExpanded = !!expandedLogs[job.id]
               const isLoadingLogs = !!loadingLogs[job.id]
 
               return (
-                <div key={job.id} className="p-6">
-                  <div className="flex items-start justify-between mb-3">
+                <div key={job.id} className="p-3 sm:p-6">
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-0 mb-3">
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-1">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-1">
                         <h3 className="font-medium text-gray-900 truncate">{job.title}</h3>
                         <span
                           className={`px-2.5 py-0.5 rounded-full text-xs font-medium capitalize shrink-0 ${
@@ -273,7 +273,7 @@ export default function VideoQueue() {
                           {job.job_type.replace(/_/g, ' ')}
                         </span>
                       </div>
-                      <div className="flex items-center gap-3 text-sm text-gray-500">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-500">
                         <span className="flex items-center gap-1">
                           <Clock className="w-3.5 h-3.5" />
                           {new Date(job.created_at).toLocaleString()}
@@ -286,7 +286,7 @@ export default function VideoQueue() {
                         )}
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 shrink-0 ml-4">
+                    <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 sm:ml-4 flex-wrap">
                       <span
                         className={`px-2.5 py-1 rounded-full text-xs font-medium capitalize ${
                           statusColors[job.status] || 'bg-gray-100 text-gray-700'

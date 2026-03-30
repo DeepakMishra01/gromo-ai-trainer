@@ -88,12 +88,12 @@ export default function Avatars() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">Manage your AI avatars for video generation</p>
+    <div className="space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+        <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">Manage your AI avatars for video generation</p>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-sm font-medium"
+          className="flex items-center gap-2 px-3 md:px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-xs md:text-sm font-medium"
         >
           <Plus className="w-4 h-4" />
           Add Avatar
@@ -101,21 +101,21 @@ export default function Avatars() {
       </div>
 
       {loading ? (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center text-gray-500">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-12 text-center text-gray-500">
           <div className="w-8 h-8 border-2 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
           <p>Loading avatars...</p>
         </div>
       ) : avatars.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center text-gray-500">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-12 text-center text-gray-500">
           <User className="w-12 h-12 mx-auto mb-3 text-gray-300" />
           <p>No avatars configured yet. Add an avatar to get started.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {avatars.map((avatar) => (
             <div
               key={avatar.id}
-              className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow"
             >
               <div className="h-40 bg-gray-50 flex items-center justify-center relative">
                 <div
@@ -134,7 +134,7 @@ export default function Avatars() {
               </div>
               <div className="p-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-medium text-gray-900">{avatar.name}</h3>
+                  <h3 className="font-medium text-gray-900 dark:text-white text-sm md:text-base">{avatar.name}</h3>
                   <p className="text-xs text-gray-400">
                     {new Date(avatar.created_at).toLocaleDateString()}
                   </p>

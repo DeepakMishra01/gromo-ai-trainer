@@ -20,6 +20,8 @@ import {
   Search,
   Package,
   AlertCircle,
+  List,
+  X,
 } from 'lucide-react'
 
 // ---- Types ----
@@ -270,17 +272,17 @@ export default function TrainingPlayer() {
   // ---- Product Selection View ----
   if (!selectedProduct) {
     return (
-      <div className="space-y-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-          <GraduationCap className="w-12 h-12 mx-auto mb-4 text-primary-600" />
-          <h2 className="text-xl font-bold text-gray-900">AI Training Sessions</h2>
-          <p className="text-gray-500 mt-2">
-            Select a product to start an interactive training session with AI-powered doubt resolution
+      <div className="space-y-4 md:space-y-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-8 text-center">
+          <GraduationCap className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 md:mb-4 text-primary-600" />
+          <h2 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">AI Training Sessions</h2>
+          <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 mt-1 md:mt-2">
+            Select a product to start an interactive training session
           </p>
         </div>
 
         {/* Search */}
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
           <div className="relative flex-1 max-w-md">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
@@ -288,10 +290,10 @@ export default function TrainingPlayer() {
               placeholder="Search products..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
-          <span className="text-sm text-gray-500">{filteredProducts.length} products available</span>
+          <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400">{filteredProducts.length} products available</span>
         </div>
 
         {/* Product Cards */}
@@ -305,39 +307,39 @@ export default function TrainingPlayer() {
             <p>No products found. Sync products first from the Products page.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {filteredProducts.map((product) => (
               <button
                 key={product.id}
                 onClick={() => startSession(product)}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-left hover:border-primary-300 hover:shadow-md transition-all group"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6 text-left hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-md transition-all group"
               >
                 <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 group-hover:text-primary-700 transition-colors">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-sm md:text-base text-gray-900 dark:text-white group-hover:text-primary-700 dark:group-hover:text-primary-400 transition-colors truncate">
                       {product.name}
                     </h3>
-                    <span className="inline-block mt-1 px-2.5 py-0.5 bg-primary-50 text-primary-700 rounded-full text-xs font-medium">
+                    <span className="inline-block mt-1 px-2 py-0.5 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 rounded-full text-xs font-medium">
                       {product.category_name}
                     </span>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-primary-500 transition-colors mt-1" />
+                  <ChevronRight className="w-5 h-5 text-gray-300 dark:text-gray-600 group-hover:text-primary-500 transition-colors mt-1 shrink-0" />
                 </div>
                 {product.payout && (
-                  <p className="text-sm text-green-600 font-medium mt-2">Payout: {product.payout}</p>
+                  <p className="text-xs md:text-sm text-green-600 dark:text-green-400 font-medium mt-2">Payout: Check GroMo App for latest payout</p>
                 )}
                 {product.description && (
-                  <p className="text-sm text-gray-500 mt-1 line-clamp-2">{product.description}</p>
+                  <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{product.description}</p>
                 )}
-                <div className="flex gap-2 mt-3">
+                <div className="flex flex-wrap gap-1.5 md:gap-2 mt-2 md:mt-3">
                   {product.has_benefits && (
-                    <span className="px-2 py-0.5 bg-green-50 text-green-700 rounded text-xs">Benefits</span>
+                    <span className="px-1.5 md:px-2 py-0.5 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded text-xs">Benefits</span>
                   )}
                   {product.has_process && (
-                    <span className="px-2 py-0.5 bg-blue-50 text-blue-700 rounded text-xs">Process</span>
+                    <span className="px-1.5 md:px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 rounded text-xs">Process</span>
                   )}
                   {product.has_terms && (
-                    <span className="px-2 py-0.5 bg-amber-50 text-amber-700 rounded text-xs">Terms</span>
+                    <span className="px-1.5 md:px-2 py-0.5 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded text-xs">Terms</span>
                   )}
                 </div>
               </button>
@@ -375,24 +377,114 @@ export default function TrainingPlayer() {
     )
   }
 
+  const [showMobileSections, setShowMobileSections] = useState(false)
   const currentSectionData = session.sections[currentSection]
   const isQuizSection = currentSectionData?.content.type === 'quiz'
 
+  const handleSectionNav = (idx: number) => {
+    navigateSection(idx)
+    setShowMobileSections(false)
+  }
+
   // ---- Training Session View ----
   return (
-    <div className="flex gap-4 h-[calc(100vh-10rem)]">
-      {/* Left Panel: Section Navigator */}
-      <div className="w-64 bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col shrink-0">
-        <div className="p-4 border-b border-gray-200">
+    <div className="flex flex-col md:flex-row gap-3 md:gap-4 h-[calc(100vh-7rem)] md:h-[calc(100vh-10rem)]">
+      {/* Mobile Section Toggle Bar */}
+      <div className="md:hidden flex items-center gap-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-3">
+        <button
+          onClick={goBack}
+          className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </button>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{session.product_name}</p>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-primary-600 dark:text-primary-400">{session.category_name}</span>
+            <span className="text-xs text-gray-400">•</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">{completedSections.size}/{session.sections.length}</span>
+          </div>
+        </div>
+        <button
+          onClick={() => setShowMobileSections(!showMobileSections)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-xs font-medium text-gray-700 dark:text-gray-300"
+        >
+          <List className="w-3.5 h-3.5" />
+          Sections
+        </button>
+      </div>
+
+      {/* Mobile Sections Drawer */}
+      {showMobileSections && (
+        <>
+          <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setShowMobileSections(false)} />
+          <div className="fixed inset-x-0 bottom-0 z-50 md:hidden bg-white dark:bg-gray-800 rounded-t-2xl shadow-xl border-t border-gray-200 dark:border-gray-700 max-h-[70vh] flex flex-col">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Sections</h3>
+              <button onClick={() => setShowMobileSections(false)} className="p-1 text-gray-400">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <nav className="flex-1 overflow-y-auto p-3 space-y-1">
+              {session.sections.map((section, idx) => {
+                const isActive = currentSection === idx
+                const isCompleted = completedSections.has(idx)
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => handleSectionNav(idx)}
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm transition-all ${
+                      isActive
+                        ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 font-medium'
+                        : isCompleted
+                        ? 'text-green-700 dark:text-green-400 bg-green-50/50 dark:bg-green-900/20'
+                        : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    <span
+                      className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs ${
+                        isActive
+                          ? 'bg-primary-600 text-white'
+                          : isCompleted
+                          ? 'bg-green-500 text-white'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                      }`}
+                    >
+                      {isCompleted ? (
+                        <CheckCircle2 className="w-4 h-4" />
+                      ) : (
+                        sectionIcons[section.icon] || <span>{idx + 1}</span>
+                      )}
+                    </span>
+                    <span className="truncate">{section.title}</span>
+                  </button>
+                )
+              })}
+            </nav>
+            <div className="p-3 border-t border-gray-200 dark:border-gray-700">
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div
+                  className="bg-primary-600 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${(completedSections.size / session.sections.length) * 100}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Left Panel: Section Navigator (Desktop only) */}
+      <div className="hidden md:flex w-64 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 flex-col shrink-0">
+        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
           <button
             onClick={goBack}
-            className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-2"
+            className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 mb-2"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Products
           </button>
-          <h3 className="font-semibold text-gray-900 text-sm">{session.product_name}</h3>
-          <span className="text-xs text-primary-600">{session.category_name}</span>
+          <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{session.product_name}</h3>
+          <span className="text-xs text-primary-600 dark:text-primary-400">{session.category_name}</span>
         </div>
         <nav className="flex-1 overflow-y-auto p-2">
           {session.sections.map((section, idx) => {
@@ -404,10 +496,10 @@ export default function TrainingPlayer() {
                 onClick={() => navigateSection(idx)}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm transition-all mb-1 ${
                   isActive
-                    ? 'bg-primary-50 text-primary-700 font-medium'
+                    ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 font-medium'
                     : isCompleted
-                    ? 'text-green-700 bg-green-50/50'
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? 'text-green-700 dark:text-green-400 bg-green-50/50 dark:bg-green-900/20'
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
               >
                 <span
@@ -416,7 +508,7 @@ export default function TrainingPlayer() {
                       ? 'bg-primary-600 text-white'
                       : isCompleted
                       ? 'bg-green-500 text-white'
-                      : 'bg-gray-100 text-gray-500'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
                   }`}
                 >
                   {isCompleted ? (
@@ -431,14 +523,14 @@ export default function TrainingPlayer() {
           })}
         </nav>
         {/* Progress */}
-        <div className="p-4 border-t border-gray-200">
-          <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
+        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
             <span>Progress</span>
             <span>
               {completedSections.size}/{session.sections.length}
             </span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
             <div
               className="bg-primary-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${(completedSections.size / session.sections.length) * 100}%` }}
@@ -450,16 +542,16 @@ export default function TrainingPlayer() {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Content Panel */}
-        <div className="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 overflow-y-auto mb-4">
-          <div className="p-6">
+        <div className="flex-1 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-y-auto mb-3 md:mb-4">
+          <div className="p-4 md:p-6">
             {/* Section Header */}
-            <div className="flex items-center gap-3 mb-6">
-              <span className="w-10 h-10 rounded-xl bg-primary-100 text-primary-600 flex items-center justify-center">
-                {sectionIcons[currentSectionData.icon] || <BookOpen className="w-5 h-5" />}
+            <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
+              <span className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 flex items-center justify-center shrink-0">
+                {sectionIcons[currentSectionData.icon] || <BookOpen className="w-4 h-4 md:w-5 md:h-5" />}
               </span>
-              <div>
-                <h2 className="text-lg font-bold text-gray-900">{currentSectionData.title}</h2>
-                <p className="text-xs text-gray-500">
+              <div className="min-w-0">
+                <h2 className="text-base md:text-lg font-bold text-gray-900 dark:text-white truncate">{currentSectionData.title}</h2>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
                   Section {currentSection + 1} of {session.sections.length}
                 </p>
               </div>
@@ -526,7 +618,7 @@ export default function TrainingPlayer() {
 
         {/* Doubt Chat Bar */}
         {!isQuizSection && (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 md:p-4">
             {doubts.length > 0 && (
               <div className="max-h-48 overflow-y-auto mb-3 space-y-3">
                 {doubts.map((d, i) => (
@@ -561,9 +653,9 @@ export default function TrainingPlayer() {
                 value={doubtInput}
                 onChange={(e) => setDoubtInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && askDoubt()}
-                placeholder="Ask a doubt about this product..."
+                placeholder="Ask a doubt..."
                 disabled={askingDoubt}
-                className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:bg-gray-50"
+                className="flex-1 px-3 md:px-4 py-2 md:py-2.5 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:bg-gray-50 dark:disabled:bg-gray-800"
               />
               <button
                 onClick={askDoubt}

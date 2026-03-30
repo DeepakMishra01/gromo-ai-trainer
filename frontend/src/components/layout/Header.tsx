@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Sun, Moon, LogOut, ChevronDown } from 'lucide-react'
+import { Sun, Moon, LogOut, ChevronDown, Menu } from 'lucide-react'
 import { useTheme } from '../../hooks/useTheme'
 import { useAuthStore } from '../../store/authStore'
 
@@ -18,7 +18,11 @@ const pageTitles: Record<string, string> = {
   '/settings': 'Settings',
 }
 
-export default function Header() {
+interface HeaderProps {
+  onMenuToggle: () => void
+}
+
+export default function Header({ onMenuToggle }: HeaderProps) {
   const location = useLocation()
   const navigate = useNavigate()
   const title = pageTitles[location.pathname] || 'GroMo AI Trainer'
@@ -36,19 +40,27 @@ export default function Header() {
     : user?.email?.charAt(0).toUpperCase() || 'U'
 
   return (
-    <header className="h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6">
-      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h2>
-      <div className="flex items-center gap-3">
+    <header className="h-14 md:h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-3 md:px-6">
+      <div className="flex items-center gap-2">
+        <button
+          onClick={onMenuToggle}
+          className="md:hidden p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+        <h2 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white truncate">{title}</h2>
+      </div>
+      <div className="flex items-center gap-2 md:gap-3">
         {/* Theme toggle */}
         <button
           onClick={toggleTheme}
-          className={`relative w-14 h-7 rounded-full transition-colors duration-300 focus:outline-none ${
+          className={`relative w-12 h-6 md:w-14 md:h-7 rounded-full transition-colors duration-300 focus:outline-none ${
             isDark ? 'bg-primary-600' : 'bg-gray-300'
           }`}
           title={isDark ? 'Light mode' : 'Dark mode'}
         >
-          <div className={`absolute top-0.5 w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-300 flex items-center justify-center ${isDark ? 'translate-x-7' : 'translate-x-0.5'}`}>
-            {isDark ? <Moon className="w-3.5 h-3.5 text-primary-600" /> : <Sun className="w-3.5 h-3.5 text-amber-500" />}
+          <div className={`absolute top-0.5 w-5 h-5 md:w-6 md:h-6 rounded-full bg-white shadow-md transform transition-transform duration-300 flex items-center justify-center ${isDark ? 'translate-x-6 md:translate-x-7' : 'translate-x-0.5'}`}>
+            {isDark ? <Moon className="w-3 h-3 md:w-3.5 md:h-3.5 text-primary-600" /> : <Sun className="w-3 h-3 md:w-3.5 md:h-3.5 text-amber-500" />}
           </div>
         </button>
 
@@ -56,9 +68,9 @@ export default function Header() {
         <div className="relative">
           <button
             onClick={() => setShowMenu(!showMenu)}
-            className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            className="flex items-center gap-1.5 md:gap-2 px-1.5 md:px-2 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           >
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+            <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-medium ${
               isAdmin
                 ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400'
                 : 'bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-400'
@@ -71,7 +83,7 @@ export default function Header() {
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">{user?.role || 'user'}</p>
             </div>
-            <ChevronDown className="w-4 h-4 text-gray-400" />
+            <ChevronDown className="w-4 h-4 text-gray-400 hidden sm:block" />
           </button>
 
           {showMenu && (

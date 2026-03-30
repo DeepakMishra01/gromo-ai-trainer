@@ -50,34 +50,34 @@ export default function Settings() {
   }
 
   return (
-    <div className="max-w-3xl space-y-6">
+    <div className="max-w-3xl space-y-4 md:space-y-6">
       {/* GroMo API */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h3 className="font-semibold text-gray-900 mb-4">GroMo API Configuration</h3>
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-3 md:mb-4 text-sm md:text-base">GroMo API Configuration</h3>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-700">API Base URL</p>
+              <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">API Base URL</p>
               <p className="text-sm text-gray-500">{settings.gromo_api_base_url}</p>
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-gray-700">Client ID</p>
+            <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">Client ID</p>
             <StatusBadge active={settings.gromo_api_client_id_set} />
           </div>
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-gray-700">Secret Key</p>
+            <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">Secret Key</p>
             <StatusBadge active={settings.gromo_api_secret_key_set} />
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-700">GP UID</p>
+              <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">GP UID</p>
               <p className="text-sm text-gray-500">{settings.gromo_api_gpuid}</p>
             </div>
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-700">Excluded Categories</p>
+              <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">Excluded Categories</p>
               <p className="text-sm text-gray-500">{settings.excluded_categories}</p>
             </div>
           </div>
@@ -85,61 +85,61 @@ export default function Settings() {
       </div>
 
       {/* AI Providers */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h3 className="font-semibold text-gray-900 mb-4">AI Providers</h3>
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-3 md:mb-4 text-sm md:text-base">AI Providers</h3>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-700">LLM Provider (Scripts, Roleplay, Doubts)</p>
-              <p className="text-sm text-gray-500 capitalize">{settings.llm_provider}</p>
+              <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">LLM Provider (Scripts, Roleplay, Doubts)</p>
+              <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 capitalize">{settings.llm_provider}</p>
             </div>
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-700">OpenAI API Key</p>
+              <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">OpenAI API Key</p>
             </div>
             <StatusBadge active={settings.openai_api_key_set} />
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-700">TTS Provider (Audio)</p>
-              <p className="text-sm text-gray-500 capitalize">{settings.tts_provider}</p>
+              <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">TTS Provider (Audio)</p>
+              <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 capitalize">{settings.tts_provider}</p>
             </div>
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-700">Sarvam AI API Key</p>
+              <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">Sarvam AI API Key</p>
             </div>
             <StatusBadge active={settings.sarvam_api_key_set} />
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-700">Avatar / Visual Provider</p>
-              <p className="text-sm text-gray-500 capitalize">{settings.avatar_provider}</p>
+              <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">Avatar / Visual Provider</p>
+              <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 capitalize">{settings.avatar_provider}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Defaults */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h3 className="font-semibold text-gray-900 mb-4">Default Settings</h3>
-        <div className="grid grid-cols-3 gap-4">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-3 md:mb-4 text-sm md:text-base">Default Settings</h3>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
           <div>
-            <p className="text-sm font-medium text-gray-700">Language</p>
-            <p className="text-sm text-gray-500 capitalize">{settings.default_language}</p>
+            <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">Language</p>
+            <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 capitalize">{settings.default_language}</p>
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-700">Resolution</p>
+            <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">Resolution</p>
             <p className="text-sm text-gray-500">{settings.default_resolution}</p>
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-700">Video Speed</p>
+            <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">Video Speed</p>
             <p className="text-sm text-gray-500">{settings.default_video_speed}x</p>
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-700">Storage</p>
-            <p className="text-sm text-gray-500 capitalize">{settings.storage_backend}</p>
+            <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">Storage</p>
+            <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 capitalize">{settings.storage_backend}</p>
           </div>
         </div>
       </div>

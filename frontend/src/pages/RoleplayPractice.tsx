@@ -268,24 +268,24 @@ export default function RoleplayPractice() {
   // ═══════════════════════════════════════════════════════════════════════════
   if (view === 'setup') {
     return (
-      <div className="max-w-2xl mx-auto space-y-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
+      <div className="max-w-2xl mx-auto space-y-4 md:space-y-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-8 text-center">
           <MessageSquare className="w-12 h-12 mx-auto mb-4 text-primary-600" />
-          <h2 className="text-xl font-bold text-gray-900">Sales Roleplay Practice</h2>
-          <p className="text-gray-500 mt-2">Practice selling financial products to an AI customer</p>
+          <h2 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">Sales Roleplay Practice</h2>
+          <p className="text-gray-500 dark:text-gray-400 mt-2">Practice selling financial products to an AI customer</p>
         </div>
 
         {/* Product Selection */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="font-semibold text-gray-900 mb-4">Select Product</h3>
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Select Product</h3>
           {products.length === 0 ? (
             <p className="text-sm text-gray-500">No products available. Sync from Products page.</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-60 overflow-y-auto">
               {products.map(p => (
                 <button key={p.id} onClick={() => setSelectedProduct(p.id)}
-                  className={`p-3 rounded-xl border-2 text-left transition-all ${selectedProduct === p.id ? 'border-primary-500 bg-primary-50' : 'border-gray-200 hover:border-gray-300'}`}>
-                  <h4 className="font-medium text-gray-900 text-sm truncate">{p.name}</h4>
+                  className={`p-3 rounded-xl border-2 text-left transition-all ${selectedProduct === p.id ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/30' : 'border-gray-200 dark:border-gray-600 hover:border-gray-300'}`}>
+                  <h4 className="font-medium text-gray-900 dark:text-white text-sm truncate">{p.name}</h4>
                   <p className="text-xs text-gray-500 mt-0.5">{p.category_name}</p>
                 </button>
               ))}
@@ -294,13 +294,13 @@ export default function RoleplayPractice() {
         </div>
 
         {/* Difficulty */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="font-semibold text-gray-900 mb-4">Select Difficulty</h3>
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Select Difficulty</h3>
           <div className="space-y-3">
             {difficulties.map(d => (
               <button key={d.value} onClick={() => setDifficulty(d.value)}
                 className={`w-full p-4 rounded-xl border-2 text-left transition-all ${difficulty === d.value ? d.color : 'border-gray-200 hover:border-gray-300'}`}>
-                <h4 className="font-medium text-gray-900">{d.label}</h4>
+                <h4 className="font-medium text-gray-900 dark:text-white">{d.label}</h4>
                 <p className="text-sm text-gray-500">{d.desc}</p>
               </button>
             ))}
@@ -308,10 +308,10 @@ export default function RoleplayPractice() {
         </div>
 
         {/* Voice Mode Toggle */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-semibold text-gray-900">Voice Mode</h3>
+              <h3 className="font-semibold text-gray-900 dark:text-white">Voice Mode</h3>
               <p className="text-sm text-gray-500 mt-1">Speak to the AI customer and hear voice responses</p>
             </div>
             <button onClick={() => setVoiceMode(!voiceMode)}
@@ -327,18 +327,18 @@ export default function RoleplayPractice() {
         {startError && <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-700">{startError}</div>}
 
         {/* Actions */}
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <button onClick={startLearnPhase} disabled={!selectedProduct || loading}
-            className="flex-1 px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 font-medium disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
+            className="flex-1 px-4 md:px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 font-medium disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
             <GraduationCap className="w-5 h-5" />
             {loading ? 'Starting...' : 'Learn & Practice'}
           </button>
           <button onClick={startSession} disabled={!selectedProduct || loading}
-            className="flex-1 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium disabled:opacity-50 transition-colors">
+            className="flex-1 px-4 md:px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium disabled:opacity-50 transition-colors">
             {loading ? 'Starting...' : 'Skip to Practice'}
           </button>
           <button onClick={openHistory}
-            className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors">
+            className="px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 font-medium transition-colors">
             <History className="w-5 h-5" />
           </button>
         </div>
@@ -352,20 +352,20 @@ export default function RoleplayPractice() {
   if (view === 'learn') {
     return (
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden" style={{ height: 'calc(100vh - 10rem)' }}>
-          <div className="flex items-center justify-between px-4 py-3 bg-emerald-50 border-b border-emerald-200">
+        <div className="h-[calc(100vh-7rem)] md:h-[calc(100vh-10rem)] bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="flex items-center justify-between px-3 md:px-4 py-3 bg-emerald-50 dark:bg-emerald-900/30 border-b border-emerald-200 dark:border-emerald-700">
             <div className="flex items-center gap-2">
-              <button onClick={resetToSetup} className="p-1 hover:bg-emerald-100 rounded">
-                <ArrowLeft className="w-4 h-4 text-emerald-700" />
+              <button onClick={resetToSetup} className="p-1 hover:bg-emerald-100 dark:hover:bg-emerald-800 rounded">
+                <ArrowLeft className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
               </button>
               <GraduationCap className="w-5 h-5 text-emerald-600" />
               <div>
-                <h2 className="text-sm font-semibold text-emerald-800">Study Phase</h2>
-                <p className="text-xs text-emerald-600">{selectedProductData?.name || 'Product'} — Ask Sahayak anything!</p>
+                <h2 className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Study Phase</h2>
+                <p className="text-xs text-emerald-600 dark:text-emerald-400 hidden sm:block">{selectedProductData?.name || 'Product'} — Ask Sahayak anything!</p>
               </div>
             </div>
             <button onClick={startSession} disabled={loading}
-              className="px-4 py-1.5 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 disabled:opacity-50 transition-colors">
+              className="px-3 md:px-4 py-1.5 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 disabled:opacity-50 transition-colors">
               {loading ? 'Starting...' : 'Start Practice →'}
             </button>
           </div>
@@ -389,19 +389,19 @@ export default function RoleplayPractice() {
     const sentimentInfo = sentimentEmoji()
 
     return (
-      <div className="flex gap-4 h-[calc(100vh-10rem)]">
+      <div className="flex flex-col md:flex-row gap-4 h-[calc(100vh-7rem)] md:h-[calc(100vh-10rem)]">
         {/* Main Chat */}
-        <div className={`flex flex-col bg-white rounded-xl shadow-sm border border-gray-200 transition-all ${showHelpPanel ? 'flex-1' : 'w-full'}`}>
+        <div className={`flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 transition-all min-h-0 ${showHelpPanel ? 'flex-1' : 'w-full'}`}>
           {/* Header */}
-          <div className="p-4 border-b border-gray-200">
+          <div className="p-3 md:p-4 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center ${voice.isSpeaking ? 'animate-pulse ring-2 ring-orange-300' : ''}`}>
                   <User className="w-5 h-5 text-orange-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">{persona?.name || 'Customer'}</h3>
-                  <p className="text-xs text-gray-500">{persona?.personality || ''}</p>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">{persona?.name || 'Customer'}</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">{persona?.personality || ''}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -436,7 +436,7 @@ export default function RoleplayPractice() {
                 <span className="flex items-center gap-1"><Target className="w-3 h-3" /> Buying Signal</span>
                 <span className="font-medium">{buyingSignal}%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                 <div className={`h-2 rounded-full transition-all duration-500 ${buyingSignal >= 70 ? 'bg-green-500' : buyingSignal >= 40 ? 'bg-yellow-500' : 'bg-red-400'}`}
                   style={{ width: `${buyingSignal}%` }} />
               </div>
@@ -444,7 +444,7 @@ export default function RoleplayPractice() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4">
             {conversation.map((msg, i) => (
               <div key={i} className={`flex ${msg.role === 'partner' ? 'justify-end' : 'justify-start'} animate-fadeIn`}>
                 {msg.role === 'customer' && (
@@ -452,7 +452,7 @@ export default function RoleplayPractice() {
                     <User className="w-3.5 h-3.5 text-orange-600" />
                   </div>
                 )}
-                <div className={`max-w-[70%] rounded-2xl px-4 py-2.5 text-sm ${msg.role === 'partner' ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-900'}`}>
+                <div className={`max-w-[85%] md:max-w-[70%] rounded-2xl px-3 md:px-4 py-2.5 text-sm ${msg.role === 'partner' ? 'bg-primary-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'}`}>
                   {msg.text}
                 </div>
                 {/* Replay button for customer messages */}
@@ -469,7 +469,7 @@ export default function RoleplayPractice() {
                 <div className="w-7 h-7 rounded-full bg-orange-100 flex items-center justify-center mr-2 mt-1 shrink-0">
                   <User className="w-3.5 h-3.5 text-orange-600" />
                 </div>
-                <div className="bg-gray-100 rounded-2xl px-4 py-2.5 text-sm text-gray-500">
+                <div className="bg-gray-100 dark:bg-gray-700 rounded-2xl px-4 py-2.5 text-sm text-gray-500 dark:text-gray-400">
                   <span className="inline-flex gap-1">
                     <span className="animate-bounce">.</span>
                     <span className="animate-bounce" style={{ animationDelay: '0.1s' }}>.</span>
@@ -496,12 +496,12 @@ export default function RoleplayPractice() {
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-3 md:p-4 border-t border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-2">
               {/* Mic button (voice mode) */}
               {voiceMode && voice.hasSpeechRecognition && (
                 <button onClick={voice.toggleListening}
-                  className={`p-2.5 rounded-full transition-all ${voice.isListening ? 'bg-red-500 text-white shadow-lg shadow-red-200 animate-pulse' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100 hover:text-emerald-600'}`}>
+                  className={`p-2.5 rounded-full transition-all ${voice.isListening ? 'bg-red-500 text-white shadow-lg shadow-red-200 animate-pulse' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-emerald-100 hover:text-emerald-600'}`}>
                   {voice.isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
                 </button>
               )}
@@ -511,7 +511,7 @@ export default function RoleplayPractice() {
                 onKeyDown={e => e.key === 'Enter' && doSendMessage()}
                 placeholder={voice.isListening ? 'Listening...' : voiceMode ? 'Speak or type...' : 'Type your sales pitch...'}
                 disabled={sending || voice.isListening}
-                className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50" />
+                className="flex-1 px-4 py-2.5 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50" />
 
               {voice.isSpeaking ? (
                 <button onClick={voice.stopSpeaking} className="p-2.5 bg-red-500 text-white rounded-full animate-pulse" title="Stop speaking">
@@ -532,7 +532,7 @@ export default function RoleplayPractice() {
 
         {/* Sahayak Help Panel */}
         {showHelpPanel && (
-          <div className="w-80 bg-white rounded-xl shadow-sm border border-blue-200 flex flex-col overflow-hidden">
+          <div className="w-full md:w-80 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-blue-200 dark:border-blue-700 flex flex-col overflow-hidden min-h-[300px] md:min-h-0">
             <div className="flex items-center justify-between px-3 py-2 bg-blue-50 border-b border-blue-200">
               <div className="flex items-center gap-1.5">
                 <HelpCircle className="w-4 h-4 text-blue-600" />
@@ -560,11 +560,11 @@ export default function RoleplayPractice() {
   // ═══════════════════════════════════════════════════════════════════════════
   if (view === 'results' && results) {
     return (
-      <div className="max-w-2xl mx-auto space-y-6">
+      <div className="max-w-2xl mx-auto space-y-4 md:space-y-6">
         {/* Overall Score */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-8 text-center">
           <Trophy className="w-10 h-10 mx-auto mb-3 text-yellow-500" />
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Session Complete</h2>
+          <h2 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-4">Session Complete</h2>
           <div className={`text-6xl font-bold ${scoreColor(results.overall_score)}`}>{results.overall_score}</div>
           <p className="text-sm text-gray-500 mt-1">out of 10</p>
           <div className="mt-3 flex items-center justify-center gap-2">
@@ -576,8 +576,8 @@ export default function RoleplayPractice() {
         </div>
 
         {/* Skill Scores */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-primary-600" /> Skill Breakdown
           </h3>
           <div className="space-y-4">
@@ -596,15 +596,15 @@ export default function RoleplayPractice() {
         </div>
 
         {/* Feedback */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="font-semibold text-gray-900 mb-3">Feedback</h3>
-          <p className="text-sm text-gray-600 leading-relaxed">{results.feedback}</p>
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Feedback</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{results.feedback}</p>
         </div>
 
         {/* Strengths & Improvements */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {results.strengths.length > 0 && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
               <h3 className="font-semibold text-green-700 mb-3 flex items-center gap-2"><CheckCircle className="w-4 h-4" /> Strengths</h3>
               <ul className="space-y-2">
                 {results.strengths.map((s, i) => (
@@ -614,7 +614,7 @@ export default function RoleplayPractice() {
             </div>
           )}
           {results.improvements.length > 0 && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
               <h3 className="font-semibold text-orange-700 mb-3 flex items-center gap-2"><TrendingUp className="w-4 h-4" /> Areas for Improvement</h3>
               <ul className="space-y-2">
                 {results.improvements.map((s, i) => (
@@ -626,17 +626,17 @@ export default function RoleplayPractice() {
         </div>
 
         {/* Actions */}
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <button onClick={() => setView('coaching')}
-            className="flex-1 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors flex items-center justify-center gap-2">
-            <Award className="w-5 h-5" /> Get Coaching from Sahayak
+            className="flex-1 px-4 md:px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors flex items-center justify-center gap-2">
+            <Award className="w-5 h-5" /> Get Coaching
           </button>
           <button onClick={startSession} disabled={loading}
-            className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium disabled:opacity-50 transition-colors">
+            className="px-4 md:px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium disabled:opacity-50 transition-colors">
             Practice Again
           </button>
           <button onClick={resetToSetup}
-            className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors">
+            className="px-4 md:px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 font-medium transition-colors">
             New Product
           </button>
         </div>
@@ -650,16 +650,16 @@ export default function RoleplayPractice() {
   if (view === 'coaching') {
     return (
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden" style={{ height: 'calc(100vh - 10rem)' }}>
-          <div className="flex items-center justify-between px-4 py-3 bg-purple-50 border-b border-purple-200">
+        <div className="h-[calc(100vh-7rem)] md:h-[calc(100vh-10rem)] bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="flex items-center justify-between px-3 md:px-4 py-3 bg-purple-50 dark:bg-purple-900/30 border-b border-purple-200 dark:border-purple-700">
             <div className="flex items-center gap-2">
-              <button onClick={() => setView('results')} className="p-1 hover:bg-purple-100 rounded">
-                <ArrowLeft className="w-4 h-4 text-purple-700" />
+              <button onClick={() => setView('results')} className="p-1 hover:bg-purple-100 dark:hover:bg-purple-800 rounded">
+                <ArrowLeft className="w-4 h-4 text-purple-700 dark:text-purple-400" />
               </button>
               <Award className="w-5 h-5 text-purple-600" />
               <div>
-                <h2 className="text-sm font-semibold text-purple-800">Sahayak Coaching</h2>
-                <p className="text-xs text-purple-600">{selectedProductData?.name || 'Product'} — Performance Review</p>
+                <h2 className="text-sm font-semibold text-purple-800 dark:text-purple-300">Sahayak Coaching</h2>
+                <p className="text-xs text-purple-600 dark:text-purple-400 hidden sm:block">{selectedProductData?.name || 'Product'} — Performance Review</p>
               </div>
             </div>
             <div className="flex gap-2">
@@ -668,7 +668,7 @@ export default function RoleplayPractice() {
                 Practice Again
               </button>
               <button onClick={resetToSetup}
-                className="px-3 py-1.5 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-colors">
+                className="px-3 py-1.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 New Product
               </button>
             </div>
@@ -691,15 +691,15 @@ export default function RoleplayPractice() {
   // ═══════════════════════════════════════════════════════════════════════════
   if (view === 'history') {
     return (
-      <div className="max-w-3xl mx-auto space-y-6">
+      <div className="max-w-3xl mx-auto space-y-4 md:space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button onClick={resetToSetup} className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+            <button onClick={resetToSetup} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             </button>
             <div>
-              <h2 className="text-lg font-bold text-gray-900">Session History</h2>
-              <p className="text-sm text-gray-500">Your past roleplay practice sessions</p>
+              <h2 className="text-base md:text-lg font-bold text-gray-900 dark:text-white">Session History</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Your past roleplay practice sessions</p>
             </div>
           </div>
           {history.length > 0 && (
@@ -725,19 +725,19 @@ export default function RoleplayPractice() {
         </div>
 
         {history.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-8 md:p-12 text-center">
             <History className="w-12 h-12 mx-auto mb-3 text-gray-300" />
             <p className="text-gray-500">No sessions yet. Start practicing!</p>
           </div>
         ) : (
-          <div className="flex gap-6">
-            <div className={`space-y-3 ${selectedHistoryItem ? 'w-1/2' : 'w-full'}`}>
+          <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+            <div className={`space-y-3 ${selectedHistoryItem ? 'w-full md:w-1/2' : 'w-full'}`}>
               {history.map(item => (
                 <button key={item.id} onClick={() => setSelectedHistoryItem(item)}
-                  className={`w-full bg-white rounded-xl shadow-sm border p-4 text-left transition-all hover:shadow ${selectedHistoryItem?.id === item.id ? 'border-primary-500 bg-primary-50' : 'border-gray-200'}`}>
+                  className={`w-full bg-white dark:bg-gray-800 rounded-xl shadow-sm border p-3 md:p-4 text-left transition-all hover:shadow ${selectedHistoryItem?.id === item.id ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/30' : 'border-gray-200 dark:border-gray-700'}`}>
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="text-sm font-medium text-gray-900">{item.product_name}</h4>
+                      <h4 className="text-sm font-medium text-gray-900 dark:text-white">{item.product_name}</h4>
                       <div className="flex items-center gap-2 mt-1">
                         <span className={`px-2 py-0.5 rounded-full text-xs font-medium capitalize ${item.difficulty === 'easy' ? 'bg-green-100 text-green-700' : item.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}`}>
                           {item.difficulty}
@@ -764,8 +764,8 @@ export default function RoleplayPractice() {
             </div>
 
             {selectedHistoryItem && (
-              <div className="w-1/2 bg-white rounded-xl shadow-sm border border-gray-200 p-6 max-h-[calc(100vh-14rem)] overflow-y-auto">
-                <h3 className="font-semibold text-gray-900 mb-1">{selectedHistoryItem.product_name}</h3>
+              <div className="w-full md:w-1/2 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6 max-h-[60vh] md:max-h-[calc(100vh-14rem)] overflow-y-auto">
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{selectedHistoryItem.product_name}</h3>
                 <div className="flex items-center gap-2 mb-4">
                   <span className={`px-2 py-0.5 rounded-full text-xs font-medium capitalize ${selectedHistoryItem.difficulty === 'easy' ? 'bg-green-100 text-green-700' : selectedHistoryItem.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}`}>
                     {selectedHistoryItem.difficulty}

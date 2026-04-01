@@ -47,6 +47,9 @@ class ChatResponse(BaseModel):
 
 class TTSRequest(BaseModel):
     text: str
+    speaker: Optional[str] = None   # Override speaker voice (e.g. "priya", "manisha")
+    pace: Optional[float] = None     # Override pace (0.5-2.0)
+    model: Optional[str] = None      # Override model (e.g. "bulbul:v2", "bulbul:v3")
 
 
 class SessionListItem(BaseModel):
@@ -125,8 +128,14 @@ def agent_tts(req: TTSRequest):
     if not cleaned:
         raise HTTPException(400, "Text empty after cleaning")
 
-    # Split into chunks (Sarvam v2 max 480 chars per request)
-    chunks = _split_for_tts(cleaned, max_chars=480)
+    # Use request overrides or defaults
+    tts_speaker = req.speaker or "manisha"
+    tts_model = req.model or "bulbul:v2"
+    tts_pace = req.pace or 1.05
+    max_chars = 2400 if "v3" in tts_model else 480
+
+    # Split into chunks
+    chunks = _split_for_tts(cleaned, max_chars=max_chars)
 
     try:
         all_audio_parts = []
@@ -140,9 +149,9 @@ def agent_tts(req: TTSRequest):
                 json={
                     "inputs": [chunk],
                     "target_language_code": "hi-IN",
-                    "speaker": "manisha",
-                    "model": "bulbul:v2",
-                    "pace": 1.05,
+                    "speaker": tts_speaker,
+                    "model": tts_model,
+                    "pace": tts_pace,
                     "enable_preprocessing": True,
                 },
                 timeout=30.0,

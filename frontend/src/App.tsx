@@ -15,6 +15,7 @@ import Voices from './pages/Voices'
 import VideoStudio from './pages/VideoStudio'
 import VideoQueue from './pages/VideoQueue'
 import TrainingPlayer from './pages/TrainingPlayer'
+import LiveTrainer from './pages/LiveTrainer'
 import RoleplayPractice from './pages/RoleplayPractice'
 import TrainingAgent from './pages/TrainingAgent'
 import Settings from './pages/Settings'
@@ -80,6 +81,11 @@ export default function App() {
       <Route path="/training" element={
         <ProtectedRoute>
           <Layout><TrainingPlayer /></Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/training/live" element={
+        <ProtectedRoute>
+          <Layout><LiveTrainer /></Layout>
         </ProtectedRoute>
       } />
       <Route path="/roleplay" element={

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { authFetch } from '../api/authFetch'
 import {
   GraduationCap,
@@ -22,6 +23,8 @@ import {
   AlertCircle,
   List,
   X,
+  Play,
+  Headphones,
 } from 'lucide-react'
 
 // ---- Types ----
@@ -103,9 +106,11 @@ const sectionIcons: Record<string, React.ReactNode> = {
 // ---- Main Component ----
 
 export default function TrainingPlayer() {
+  const navigate = useNavigate()
   const [products, setProducts] = useState<TrainingProduct[]>([])
   const [loadingProducts, setLoadingProducts] = useState(true)
   const [search, setSearch] = useState('')
+  const [modePickerProduct, setModePickerProduct] = useState<TrainingProduct | null>(null)
   const [selectedProduct, setSelectedProduct] = useState<TrainingProduct | null>(null)
   const [session, setSession] = useState<TrainingSession | null>(null)
   const [loadingSession, setLoadingSession] = useState(false)
@@ -312,7 +317,7 @@ export default function TrainingPlayer() {
             {filteredProducts.map((product) => (
               <button
                 key={product.id}
-                onClick={() => startSession(product)}
+                onClick={() => setModePickerProduct(product)}
                 className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6 text-left hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-md transition-all group"
               >
                 <div className="flex items-start justify-between">
@@ -346,6 +351,78 @@ export default function TrainingPlayer() {
               </button>
             ))}
           </div>
+        )}
+
+        {/* Mode Picker Modal */}
+        {modePickerProduct && (
+          <>
+            <div className="fixed inset-0 bg-black/50 z-40" onClick={() => setModePickerProduct(null)} />
+            <div className="fixed inset-x-4 top-1/2 -translate-y-1/2 z-50 max-w-md mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="p-5 border-b border-gray-100 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-base font-bold text-gray-900 dark:text-white">{modePickerProduct.name}</h3>
+                    <span className="text-xs text-primary-600 dark:text-primary-400">{modePickerProduct.category_name}</span>
+                  </div>
+                  <button
+                    onClick={() => setModePickerProduct(null)}
+                    className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-5 space-y-3">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Choose training mode:</p>
+
+                {/* Live Class Option */}
+                <button
+                  onClick={() => {
+                    setModePickerProduct(null)
+                    navigate(`/training/live?product=${modePickerProduct.id}`)
+                  }}
+                  className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/20 hover:border-primary-400 dark:hover:border-primary-600 transition-all group text-left"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center shrink-0 shadow-md">
+                    <Headphones className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary-700 dark:group-hover:text-primary-400">
+                      Live Class with AI Trainer
+                    </h4>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                      Priya will teach you like a live Zoom class with voice
+                    </p>
+                  </div>
+                  <Play className="w-5 h-5 text-primary-500 shrink-0" />
+                </button>
+
+                {/* Self-Paced Option */}
+                <button
+                  onClick={() => {
+                    const product = modePickerProduct
+                    setModePickerProduct(null)
+                    startSession(product)
+                  }}
+                  className="w-full flex items-center gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500 transition-all group text-left"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center shrink-0 shadow-md">
+                    <BookOpen className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-gray-700 dark:group-hover:text-gray-300">
+                      Self-Paced Reading
+                    </h4>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                      Read training content at your own speed
+                    </p>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-gray-400 shrink-0" />
+                </button>
+              </div>
+            </div>
+          </>
         )}
       </div>
     )

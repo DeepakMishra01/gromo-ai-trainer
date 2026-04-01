@@ -14,6 +14,11 @@ from app.models.category import Category
 from app.services.knowledge_builder import get_knowledge_for_product
 from app.services.doubt_resolver import resolve_doubt
 from app.services.training_session import create_training_session
+from app.services.live_trainer_service import (
+    generate_live_script,
+    format_doubt_response,
+    generate_completion_narration,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -60,6 +65,40 @@ class QuizCheckRequest(BaseModel):
 class QuizCheckResponse(BaseModel):
     correct: bool
     explanation: str
+
+
+# ---- Live Trainer Schemas ----
+
+class LiveScriptRequest(BaseModel):
+    product_id: str
+
+
+class LiveDoubtRequest(BaseModel):
+    product_id: str
+    question: str
+    current_section: Optional[str] = None
+
+
+class LiveDoubtResponse(BaseModel):
+    answer_narration: str
+    source: str
+
+
+class LiveQuizFeedbackRequest(BaseModel):
+    question: str
+    selected_option: str
+    is_correct: bool
+    correct_option: str = ""
+
+
+class LiveQuizFeedbackResponse(BaseModel):
+    feedback_narration: str
+
+
+class LiveCompletionRequest(BaseModel):
+    product_name: str
+    score: int
+    total: int
 
 
 # ---- WebSocket (kept for future real-time use) ----
@@ -182,3 +221,56 @@ def check_quiz_answer(request: QuizCheckRequest):
         )
 
     return QuizCheckResponse(correct=is_correct, explanation=explanation)
+
+
+# ---- Live AI Trainer Endpoints ----
+
+@router.post("/live-script")
+def create_live_script(request: LiveScriptRequest, db: Session = Depends(get_db)):
+    """Generate a full live training script with narration segments and quiz."""
+    try:
+        script_data = generate_live_script(request.product_id, db)
+        return script_data
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Failed to generate live script: {e}")
+        raise HTTPException(status_code=500, detail="Failed to generate live training script")
+
+
+@router.post("/live-doubt", response_model=LiveDoubtResponse)
+def live_doubt(request: LiveDoubtRequest, db: Session = Depends(get_db)):
+    """Ask a doubt during live training. Returns speech-formatted answer."""
+    knowledge = get_knowledge_for_product(request.product_id, db)
+    if not knowledge:
+        raise HTTPException(status_code=404, detail="Product not found or knowledge base unavailable")
+
+    try:
+        raw_answer = resolve_doubt(
+            question=request.question,
+            product_knowledge=knowledge,
+            language="hinglish",
+        )
+        spoken_answer = format_doubt_response(raw_answer)
+        return LiveDoubtResponse(answer_narration=spoken_answer, source="knowledge_base")
+    except Exception as e:
+        logger.error(f"Live doubt resolution failed: {e}")
+        return LiveDoubtResponse(
+            answer_narration=(
+                "Achha, yeh sawaal thoda complex hai. "
+                "Abhi main iska jawab nahi de pa rahi, "
+                "please GroMo app pe check karein ya support team se puchein."
+            ),
+            source="fallback",
+        )
+
+
+@router.post("/live-completion")
+def live_completion(request: LiveCompletionRequest):
+    """Generate a completion narration based on quiz score."""
+    narration = generate_completion_narration(
+        score=request.score,
+        total=request.total,
+        product_name=request.product_name,
+    )
+    return {"narration": narration}

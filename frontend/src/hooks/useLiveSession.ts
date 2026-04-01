@@ -82,8 +82,8 @@ export function useLiveSession() {
 
   // Audio queue
   const audioQueue = useAudioQueue({
-    speaker: 'priya',
-    pace: 0.85,
+    speaker: 'anushka',
+    pace: 0.9,
     model: 'bulbul:v2',
     onSegmentStart: (index: number) => {
       setCurrentSegmentIndex(index)

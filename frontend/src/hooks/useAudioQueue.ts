@@ -109,15 +109,23 @@ export function useAudioQueue(options: UseAudioQueueOptions = {}) {
     }
 
     if (!url) {
-      // Skip segment if no audio
+      // Audio failed — show slide for a reasonable time based on narration length
+      // Estimate ~3 words/sec reading speed as fallback display time
+      const seg = segmentsRef.current[index]
+      const wordCount = seg?.text?.split(/\s+/).length || 20
+      const displayMs = Math.max(5000, Math.min(wordCount / 3 * 1000, 20000))
+
       optionsRef.current.onSegmentStart?.(index)
       segmentsRef.current = segmentsRef.current.map((s, i) =>
         i === index ? { ...s, status: 'done' as const } : s
       )
       setSegments([...segmentsRef.current])
-      optionsRef.current.onSegmentEnd?.(index)
-      // Auto advance after a brief pause
-      setTimeout(() => playSegment(index + 1), 500)
+
+      // Wait for reasonable reading time before advancing
+      setTimeout(() => {
+        optionsRef.current.onSegmentEnd?.(index)
+        playSegment(index + 1)
+      }, displayMs)
       return
     }
 
